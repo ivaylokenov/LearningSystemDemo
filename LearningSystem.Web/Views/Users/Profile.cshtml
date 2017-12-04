@@ -1,0 +1,50 @@
+﻿@model UserProfileServiceModel
+
+@{
+    ViewData["Title"] = $"{Model.UserName} Profile";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>@Model.Name - @Model.Birthdate.ToShortDateString()</h3>
+
+@if (Model.UserName == User.Identity.Name)
+{
+    <a asp-controller="Manage" asp-action="Index" class="btn btn-default">Edit Profile</a>
+    <br />
+    <br />
+}
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Course</th>
+            <th>Grade</th>
+            <th>Certificate</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model.Courses)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id">@course.Name</a>
+                </td>
+                <td>@(course.Grade == null ? "No Grade" : course.Grade.ToString())</td>
+                <td>
+                    @if (course.Grade == Grade.A
+                        || course.Grade == Grade.B
+                        || course.Grade == Grade.C)
+                    {
+                        <a asp-action="DownloadCertificate" asp-route-id="@course.Id">Download</a>
+                    }
+                    else
+                    {
+                        @: Not applicable
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

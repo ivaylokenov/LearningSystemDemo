@@ -1,0 +1,45 @@
+﻿@model ArticleListingViewModel
+
+@{
+    ViewData["Title"] = "Blog Articles";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <ul class="list-group article-list">
+            @foreach (var article in Model.Articles)
+            {
+                <li class="list-group-item">
+                    <a asp-action="Details" asp-route-id="@article.Id" asp-route-title="@article.Title.ToFriendlyUrl()">@article.Title</a>
+                    <br />
+                    <small>published by @article.Author on @article.PublishDate.ToShortDateString()</small>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@if (Model.TotalArticles > Model.Articles.Count())
+{
+    <ul class="pagination">
+        <li class="@(Model.CurrentPage == 1 ? "disabled" : string.Empty)">
+            <a
+               asp-route-page="@Model.PreviousPage"
+               aria-label="Previous"
+            >
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="@(Model.CurrentPage == Model.TotalPages ? "disabled" : string.Empty)">
+            <a 
+               asp-route-page="@Model.NextPage"
+               aria-label="Next"
+            >
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+}
+

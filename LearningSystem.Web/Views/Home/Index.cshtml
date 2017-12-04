@@ -1,0 +1,34 @@
+﻿@model HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Active Courses";
+}
+
+<div class="jumbotron home-jumbotron">
+    <h1 class="text-center">Welcome to our learning system!</h1>
+</div>
+
+<div class="row">
+    <form asp-action="Search">
+        <div class="col-md-6">
+            <input asp-for="SearchText" class="form-control" placeholder="Search..." />
+        </div>
+        <div class="col-md-2">
+            <input asp-for="SearchInCourses" /> 
+            <label asp-for="SearchInCourses"></label>
+        </div>
+        <div class="col-md-2">
+            <input asp-for="SearchInUsers" />
+            <label asp-for="SearchInUsers"></label>
+        </div>
+        <div class="col-md-2">
+            <input type="submit" class="btn btn-default pull-right" value="Search" />
+        </div>
+    </form>
+</div>
+
+<br />
+
+<div class="row course-listings">
+    @await Html.PartialAsync("_CourseListingsPartial", Model.Courses)
+</div>
