@@ -6,8 +6,8 @@
     using LearningSystem.Services.Models;
     using LearningSystem.Web.Controllers;
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using Mocks;
     using Moq;
     using System.Linq;
     using System.Threading.Tasks;
@@ -35,7 +35,7 @@
         public async Task ProfileShouldReturnNotFoundWithInvalidUsername()
         {
             // Arrange
-            var userManager = this.GetUserManagerMock();
+            var userManager = UserManagerMock.New;
 
             var controller = new UsersController(null, userManager.Object);
 
@@ -55,7 +55,7 @@
             const string userId = "SomeId";
             const string username = "SomeUsername";
 
-            var userManager = this.GetUserManagerMock();
+            var userManager = UserManagerMock.New;
             userManager
                 .Setup(u => u.FindByNameAsync(It.IsAny<string>()))
                 .ReturnsAsync(new User { Id = userId });
@@ -80,9 +80,5 @@
                 .Should()
                 .Match(m => m.As<UserProfileServiceModel>().UserName == username);
         }
-
-        private Mock<UserManager<User>> GetUserManagerMock()
-            => new Mock<UserManager<User>>(
-                Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
     }
 }
