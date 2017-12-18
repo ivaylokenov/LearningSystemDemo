@@ -53,7 +53,7 @@
                     new CourseListingServiceModel { Id = 10 }
                 });
 
-            var controller = new HomeController(null, null);
+            var controller = new HomeController(courseService.Object, null);
 
             // Act
             var result = await controller.Search(new SearchFormModel
